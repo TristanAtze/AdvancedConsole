@@ -14,7 +14,6 @@ internal static class Program
         TextLayout.Section("AdvancedConsole Demo");
         Figlet.Write("ADV CONSOLE", ConsoleColor.Cyan);
 
-        // Styled writes
         ColorWriter.WriteLineInfo("This is an info line");
         ColorWriter.WriteLineSuccess("This is a success line");
         ColorWriter.WriteLineWarning("This is a warning line");
