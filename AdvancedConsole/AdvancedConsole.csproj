@@ -16,7 +16,6 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
-		<!-- GitHub / NuGet Gallery Metadaten -->
 		<RepositoryUrl>https://github.com/TristanAtze/AdvancedConsole</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageProjectUrl>https://github.com/TristanAtze/AdvancedConsole</PackageProjectUrl>
