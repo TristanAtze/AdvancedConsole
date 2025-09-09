@@ -13,6 +13,7 @@ public sealed class ConsoleTheme
 
 public static class ConsoleX
 {
+    public static readonly object RenderLock = new();
     public static ConsoleTheme Theme { get; } = new();
 
     /// <summary>Scoped color write. Resets at the end.</summary>

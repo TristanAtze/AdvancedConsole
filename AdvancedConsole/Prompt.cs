@@ -9,9 +9,9 @@ public static class Prompt
 {
     public static bool YesNo(string question, bool defaultYes = true)
     {
-        ColorWriter.WriteTagged($"{question} [");
-        ColorWriter.WriteTagged(defaultYes ? "[green]Y[/]/n" : "y/[red]N[/]");
-        ColorWriter.WriteTagged("]: ");
+        string options = defaultYes ? "[green]Y[/]/n" : "y/[red]N[/]";
+        ColorWriter.WriteTagged($"{question} [{options}]: ");
+
         while (true)
         {
             var key = Console.ReadKey(intercept: true).Key;
@@ -20,6 +20,7 @@ public static class Prompt
             if (key == ConsoleKey.N) { Console.WriteLine("n"); return false; }
         }
     }
+
 
     public static string Input(string prompt, string? defaultValue = null, Func<string, (bool ok, string? error)>? validator = null)
     {

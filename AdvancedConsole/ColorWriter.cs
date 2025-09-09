@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -32,7 +32,8 @@ public static class ColorWriter
         ["white"] = ConsoleColor.White,
     };
 
-    private static readonly Regex _tag = new(@"\[(?<tag>/?[a-zA-Z]+(?:=[a-zA-Z]+)?)\]", RegexOptions.Compiled);
+    private static readonly Regex _tag = new(@"\[(?<tag>\/|\/?[A-Za-z]+(?:=[A-Za-z]+)?)\]",
+    RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
     public static void WriteLineInfo(string text) => WriteTaggedLine(text, ConsoleX.Theme.Info);
     public static void WriteLineSuccess(string text) => WriteTaggedLine(text, ConsoleX.Theme.Success);
@@ -47,63 +48,116 @@ public static class ColorWriter
 
     public static void WriteTagged(string text, ConsoleColor? defaultColor = null)
     {
-        if (!Ansi.IsEnabled)
-        {
-            // Strip ALL [tags] inkl. [/], [bg=...], [bold], [underline], [color]
-            string plain = _tag.Replace(text, string.Empty);
-            ConsoleX.WithColor(defaultColor, null, () => Console.Write(plain));
+        if (string.IsNullOrEmpty(text))
             return;
-        }
 
-        var sb = new StringBuilder();
         var fgStack = new Stack<ConsoleColor?>();
         var bgStack = new Stack<ConsoleColor?>();
         bool bold = false, underline = false;
 
+        if (defaultColor.HasValue) fgStack.Push(defaultColor);
+        ApplyStyle();
+
         int lastIndex = 0;
+
+        // Helper: apply current style (ANSI or Console)
+        void ApplyStyle()
+        {
+            var fg = fgStack.Count > 0 ? fgStack.Peek() : (ConsoleColor?)null;
+            var bg = bgStack.Count > 0 ? bgStack.Peek() : (ConsoleColor?)null;
+
+            if (Ansi.IsEnabled)
+            {
+                Console.Write(Ansi.Reset);
+                if (fg.HasValue) Console.Write(Ansi.Fg(fg.Value));
+                if (bg.HasValue) Console.Write(Ansi.Bg(bg.Value));
+                if (bold) Console.Write(Ansi.Bold);
+                if (underline) Console.Write(Ansi.Underline);
+            }
+            else
+            {
+                // non-ANSI: set Console colors
+                var oldFg = Console.ForegroundColor;
+                var oldBg = Console.BackgroundColor;
+                if (fg.HasValue) Console.ForegroundColor = fg.Value;
+                if (bg.HasValue) Console.BackgroundColor = bg.Value;
+                // we don't buffer old colors per char; we rely on explicit resets below
+            }
+        }
+
+        void ResetStyle()
+        {
+            if (Ansi.IsEnabled)
+            {
+                Console.Write(Ansi.Reset);
+            }
+            else
+            {
+                // reset to defaults
+                Console.ResetColor();
+            }
+        }
+
         foreach (Match m in _tag.Matches(text))
         {
-            sb.Append(text.AsSpan(lastIndex, m.Index - lastIndex));
+            // write literal chunk before tag with current style
+            var literal = text.AsSpan(lastIndex, m.Index - lastIndex);
+            if (!literal.IsEmpty)
+                Console.Write(literal.ToString());
+
+
             lastIndex = m.Index + m.Length;
 
             var tag = m.Groups["tag"].Value;
-            if (tag.Equals("/", StringComparison.Ordinal))
+
+            // Close tag: [/]
+            if (tag == "/")
             {
-                if (fgStack.Count > 0) sb.Append(Ansi.Reset).Append(GetAnsi(fgStack.Pop(), bgStack.Count > 0 ? bgStack.Peek() : null, bold, underline));
-                if (bgStack.Count > 0) { /* handled by GetAnsi */ }
+                // pop one level each
+                if (fgStack.Count > 0) fgStack.Pop();
+                if (bgStack.Count > 0) bgStack.Pop();
                 bold = false; underline = false;
+
+                ApplyStyle();
                 continue;
             }
 
-            if (tag.Equals("bold", StringComparison.OrdinalIgnoreCase)) { bold = true; sb.Append("\u001b[1m"); continue; }
-            if (tag.Equals("underline", StringComparison.OrdinalIgnoreCase)) { underline = true; sb.Append("\u001b[4m"); continue; }
+            // [bold], [underline]
+            if (tag.Equals("bold", StringComparison.OrdinalIgnoreCase)) { bold = true; ApplyStyle(); continue; }
+            if (tag.Equals("underline", StringComparison.OrdinalIgnoreCase)) { underline = true; ApplyStyle(); continue; }
 
+            // [bg=...]
             if (tag.StartsWith("bg=", StringComparison.OrdinalIgnoreCase))
             {
                 var name = tag.Split('=')[1];
                 if (_colors.TryGetValue(name, out var c))
                 {
                     bgStack.Push(c);
-                    sb.Append(Ansi.Bg(c));
+                    ApplyStyle();
                 }
                 continue;
             }
 
+            // [red], [cyan], ...
             if (_colors.TryGetValue(tag, out var col))
             {
                 fgStack.Push(col);
-                sb.Append(Ansi.Fg(col));
+                ApplyStyle();
+                continue;
             }
+
+            // Unknown tag → ignore
         }
 
-        sb.Append(text.AsSpan(lastIndex));
+        // tail after last match
+        if (lastIndex < text.Length)
+            Console.Write(text.AsSpan(lastIndex).ToString());
 
-        if (defaultColor.HasValue)
-            Console.Write(Ansi.Fg(defaultColor.Value));
 
-        Console.Write(sb.ToString());
-        Console.Write(Ansi.Reset);
+        // final reset
+        ResetStyle();
     }
+
 
 
     private static string GetAnsi(ConsoleColor? fg, ConsoleColor? bg, bool bold, bool underline)
