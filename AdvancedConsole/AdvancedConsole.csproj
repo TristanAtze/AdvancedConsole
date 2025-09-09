@@ -1,9 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Deterministic>true</Deterministic>
+		<IncludeSymbols>true</IncludeSymbols>
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+		<!-- NuGet -->
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>AdvancedConsolePro</PackageId>
+		<Authors>Ben Sowieja</Authors>
+		<Description>Advanced console utilities: styling, prompts, progress bars, spinners, tables, trees, animations, logging.</Description>
+		<PackageTags>console;cli;terminal;ansi;prompt;progress;spinner;table;tree;logging</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
+		<!-- GitHub / NuGet Gallery Metadaten -->
+		<RepositoryUrl>https://github.com/TristanAtze/AdvancedConsole</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://github.com/TristanAtze/AdvancedConsole</PackageProjectUrl>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+		<!-- README im NuGet anzeigen -->
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+
+		<!-- CI/SourceLink/Deterministic Builds -->
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="ConsoleX\**\*.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+	</ItemGroup>
+
+	<!-- README ins Paket legen (falls README in Projekt-Root liegt) -->
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
 </Project>
