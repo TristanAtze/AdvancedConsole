@@ -15,7 +15,7 @@ public sealed class ProgressBar : IDisposable
     public ProgressBar(string label = "", int width = 40)
     {
         _width = Math.Max(10, width);
-        _top = Console.CursorTop;       // reserviere aktuelle Zeile
+        _top = Console.CursorTop;       
         _label = label;
         Draw();
     }

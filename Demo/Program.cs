@@ -12,7 +12,7 @@ internal static class Program
     {
         // Section & Figlet
         TextLayout.Section("AdvancedConsole Demo");
-        Figlet.Write("ADV CONSOLE", ConsoleColor.Cyan);
+        Figlet.Write("ADV DEMO", ConsoleColor.DarkCyan);
 
         ColorWriter.WriteLineInfo("This is an info line");
         ColorWriter.WriteLineSuccess("This is a success line");
