@@ -97,7 +97,7 @@ internal static class Program
             highlightColor: ConsoleColor.White,
             window: 5,
             ms: 40,
-            loops: 2);
+            loops: 4);
 
         // Reverse direction, bold highlight off
         await Animation.Shimmer(
@@ -106,7 +106,7 @@ internal static class Program
             highlightColor: ConsoleColor.Cyan,
             window: 3,
             ms: 55,
-            loops: 2,           // endless until du cancelst (oder brichst mit Ctrl+C)
+            loops: 4,           // endless until du cancelst (oder brichst mit Ctrl+C)
             fromRight: true,
             boldHighlight: false);
 
