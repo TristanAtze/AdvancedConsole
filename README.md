@@ -3,7 +3,7 @@
 [![NuGet](https://img.shields.io/nuget/v/AdvancedConsole.svg)](https://www.nuget.org/packages/AdvancedConsole)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-**AdvancedConsole** ist ein modernes .NET 8 Utility-Paket für **stylische Konsolenanwendungen**.  
+**AdvancedConsole** ist ein modernes .NET 8 Paket für **stylische Konsolenanwendungen**.  
 Es kombiniert Farben, UI-Elemente, Animationen und Logging in einer einzigen, leichten Bibliothek.
 
 ---
