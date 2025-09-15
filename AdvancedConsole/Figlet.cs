@@ -72,13 +72,34 @@ public static class Figlet
     };
 
 
+    /// <summary>
+    /// Writes text using the built-in FIGlet-style font with default height of 5 lines.
+    /// </summary>
+    /// <param name="text">The text to render.</param>
+    /// <param name="color">Optional foreground color to use while rendering.</param>
     public static void Write(string text, ConsoleColor? color = null)
     {
-        var lines = new string[5];
+        Write(text, 5, color);
+    }
+
+    /// <summary>
+    /// Writes text using the built-in FIGlet-style font with a selectable height.
+    /// </summary>
+    /// <param name="text">The text to render.</param>
+    /// <param name="height">The font height in lines. Supported values: 5 or 7.</param>
+    /// <param name="color">Optional foreground color to use while rendering.</param>
+    public static void Write(string text, int height, ConsoleColor? color = null)
+    {
+        if (height != 5 && height != 7)
+            throw new ArgumentOutOfRangeException(nameof(height), "Only heights 5 or 7 are supported.");
+
+        var lines = new string[height];
         foreach (var ch in text.ToUpperInvariant())
         {
-            var glyph = Font.TryGetValue(ch, out var g) ? g : Font['?'];
-            for (int i = 0; i < 5; i++)
+            var baseGlyph = Font.TryGetValue(ch, out var g) ? g : Font['?'];
+            var glyph = height == 5 ? baseGlyph : ExpandToSevenLines(baseGlyph);
+
+            for (int i = 0; i < height; i++)
                 lines[i] += glyph[i] + " ";
         }
 
@@ -86,5 +107,19 @@ public static class Figlet
         {
             foreach (var l in lines) Console.WriteLine(l);
         });
+    }
+
+    private static string[] ExpandToSevenLines(string[] fiveLineGlyph)
+    {
+        // Simple vertical expansion: duplicate some rows to achieve 7 lines.
+        // Mapping: 0,1,1,2,3,3,4
+        var indices = new[] { 0, 1, 1, 2, 3, 3, 4 };
+        var seven = new string[7];
+        for (int i = 0; i < 7; i++)
+        {
+            var src = Math.Clamp(indices[i], 0, fiveLineGlyph.Length - 1);
+            seven[i] = fiveLineGlyph[src];
+        }
+        return seven;
     }
 }
