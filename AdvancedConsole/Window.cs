@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Versioning;
 
 namespace AdvancedConsole;
 
@@ -26,8 +27,12 @@ public static class Window
         }
     }
 
+    [SupportedOSPlatform("windows")]
     public static void BeepSuccess() { TryBeep(880, 120); }
+
+    [SupportedOSPlatform("windows")]
     public static void BeepError() { TryBeep(220, 180); }
 
+    [SupportedOSPlatform("windows")]
     private static void TryBeep(int freq, int dur) { try { Console.Beep(freq, dur); } catch { } }
 }

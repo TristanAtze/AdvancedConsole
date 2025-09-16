@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AdvancedConsole;
 
+/// <summary>
+/// Animation.
+/// </summary>
 public static partial class Animation
 {
     /// <summary>
@@ -18,6 +22,7 @@ public static partial class Animation
     /// <param name="fromRight">If true, highlight travels right→left; otherwise left→right.</param>
     /// <param name="boldHighlight">If true and ANSI is enabled, highlight is also bold.</param>
     /// <param name="ct">Cancellation token.</param>
+    [SupportedOSPlatform("windows")]
     public static async Task Shimmer(
         string text,
         ConsoleColor baseColor,

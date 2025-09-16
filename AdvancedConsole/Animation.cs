@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,6 +19,7 @@ public static partial class Animation
     /// <param name="loops"></param>
     /// <param name="dynamicWidth"></param>
     /// <param name="ct"></param>
+    [SupportedOSPlatform("windows")]
     public static async Task Marquee(
     string text,
     int width = 30,

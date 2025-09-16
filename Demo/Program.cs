@@ -3,11 +3,13 @@ using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Runtime.Versioning;
 
 namespace Demo;
 
 internal static class Program
 {
+    [SupportedOSPlatform("windows")]
     private static async Task Main()
     {
         // Section & Figlet
@@ -77,6 +79,7 @@ internal static class Program
             Console.WriteLine(line);
 
         // Window utils
+        
         Window.BeepSuccess();
         Window.ClearRegion(0, Console.CursorTop, 10, 1); // tiny wipe
 
