@@ -12,7 +12,6 @@ public static class Figlet
 {
     private static readonly Dictionary<char, string[]> Font = new()
     {
-        // Very small block letters (5 lines). Add as needed.
         ['A'] = new[] { "  ██  ", " █  █ ", " ████ ", " █  █ ", " █  █ " },
         ['B'] = new[] { " ███  ", " █  █ ", " ███  ", " █  █ ", " ███  " },
         ['C'] = new[] { "  ███ ", " █    ", " █    ", " █    ", "  ███ " },
