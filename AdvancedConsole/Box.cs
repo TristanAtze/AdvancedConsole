@@ -5,8 +5,21 @@ namespace AdvancedConsole;
 
 /// <summary>
 /// Box style.
-/// </summary>
-public enum BoxStyle { Single, Double, Rounded }
+/// </summary>  
+public enum BoxStyle { 
+    /// <summary>
+    /// Single.
+    /// </summary>
+    Single, 
+    /// <summary>
+    /// Double.
+    /// </summary>
+    Double, 
+    /// <summary>
+    /// Rounded.
+    /// </summary>
+    Rounded 
+}
 
 /// <summary>
 /// Box.
