@@ -34,18 +34,43 @@ public static class ColorWriter
 
     private static readonly Regex _tag = new(@"\[(?<tag>\/|\/?[A-Za-z]+(?:=[A-Za-z]+)?)\]",
     RegexOptions.Compiled | RegexOptions.CultureInvariant);
-
+    /// <summary>
+    /// Write a line with info color.
+    /// </summary>
+    /// <param name="text"></param>
     public static void WriteLineInfo(string text) => WriteTaggedLine(text, ConsoleX.Theme.Info);
+    /// <summary>
+    /// Write a line with success color.
+    /// </summary>
+    /// <param name="text"></param>
     public static void WriteLineSuccess(string text) => WriteTaggedLine(text, ConsoleX.Theme.Success);
+    /// <summary>
+    /// Write a line with warning color.
+    /// </summary>
+    /// <param name="text"></param>
     public static void WriteLineWarning(string text) => WriteTaggedLine(text, ConsoleX.Theme.Warning);
+    /// <summary>
+    /// Write a line with error color.
+    /// </summary>
+    /// <param name="text"></param>
     public static void WriteLineError(string text) => WriteTaggedLine(text, ConsoleX.Theme.Error);
 
+    /// <summary>
+    /// Write a line with tagged color.
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="defaultColor"></param>
     public static void WriteTaggedLine(string text, ConsoleColor? defaultColor = null)
     {
         WriteTagged(text, defaultColor);
         Console.WriteLine();
     }
 
+    /// <summary>
+    /// Write a line with tagged color.
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="defaultColor"></param>
     public static void WriteTagged(string text, ConsoleColor? defaultColor = null)
     {
         if (string.IsNullOrEmpty(text))
@@ -160,6 +185,14 @@ public static class ColorWriter
 
 
 
+    /// <summary>
+    /// Get ANSI code for current style.
+    /// </summary>
+    /// <param name="fg"></param>
+    /// <param name="bg"></param>
+    /// <param name="bold"></param>
+    /// <param name="underline"></param>
+    /// <returns></returns>
     private static string GetAnsi(ConsoleColor? fg, ConsoleColor? bg, bool bold, bool underline)
     {
         var sb = new StringBuilder();

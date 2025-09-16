@@ -3,10 +3,22 @@ using System.Linq;
 
 namespace AdvancedConsole;
 
+/// <summary>
+/// Box style.
+/// </summary>
 public enum BoxStyle { Single, Double, Rounded }
 
+/// <summary>
+/// Box.
+/// </summary>
 public static class Box
 {
+    /// <summary>
+    /// Write a box.
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="style"></param>
+    /// <param name="color"></param>
     public static void Write(string text, BoxStyle style = BoxStyle.Single, ConsoleColor? color = null)
     {
         var lines = (text ?? string.Empty).Replace("\r", "").Split('\n');

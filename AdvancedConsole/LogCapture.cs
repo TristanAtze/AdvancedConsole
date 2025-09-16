@@ -9,9 +9,17 @@ namespace AdvancedConsole;
 /// </summary>
 public static class LogCapture
 {
+    /// <summary>
+    /// Tee writer.
+    /// </summary>
     private sealed class TeeWriter : TextWriter
     {
         private readonly TextWriter _a, _b;
+        /// <summary>
+        /// Initialize a new tee writer.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
         public TeeWriter(TextWriter a, TextWriter b) { _a = a; _b = b; }
         public override Encoding Encoding => _a.Encoding;
         public override void Write(char value) { _a.Write(value); _b.Write(value); }
@@ -21,9 +29,17 @@ public static class LogCapture
         public override void Flush() { _a.Flush(); _b.Flush(); }
     }
 
+    /// <summary>
+    /// Original writer.
+    /// </summary>
     private static TextWriter? _orig;
     private static StreamWriter? _file;
 
+    /// <summary>
+    /// Start capturing.
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <param name="append"></param>
     public static void Start(string filePath, bool append = true)
     {
         if (_orig != null) return;
@@ -34,6 +50,9 @@ public static class LogCapture
         Console.SetOut(new TeeWriter(_orig, _file));
     }
 
+    /// <summary>
+    /// Stop capturing.
+    /// </summary>
     public static void Stop()
     {
         if (_orig == null) return;

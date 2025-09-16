@@ -4,13 +4,25 @@ using System.Threading.Tasks;
 
 namespace AdvancedConsole;
 
+/// <summary>
+/// Animation.
+/// </summary>
 public static partial class Animation
 {
+    /// <summary>
+    /// Marquee.
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="width"></param>
+    /// <param name="ms"></param>
+    /// <param name="loops"></param>
+    /// <param name="dynamicWidth"></param>
+    /// <param name="ct"></param>
     public static async Task Marquee(
     string text,
     int width = 30,
     int ms = 100,
-    int loops = -1,           // -1 => endless, sonst: wie oft der gesamte Scroll-String durchlaufen wird
+    int loops = -1,
     bool dynamicWidth = false,
     CancellationToken ct = default)
     {
@@ -28,7 +40,6 @@ public static partial class Animation
         // How many total ticks? (-1 means endless)
         long totalTicks = loops < 0 ? long.MaxValue : (long)loops * src.Length;
 
-        // Local helper: get a wrapped slice of length 'w' starting at 'start'
         static string WrapSlice(string s, int start, int w)
         {
             if (w <= 0) return string.Empty;
@@ -94,7 +105,12 @@ public static partial class Animation
         }
     }
 
-
+    /// <summary>
+    /// Gradient text.
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
     public static void GradientText(string text, ConsoleColor start, ConsoleColor end)
     {
         // Simple two-color blend: first half 'start', second half 'end'

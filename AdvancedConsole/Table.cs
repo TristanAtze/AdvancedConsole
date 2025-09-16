@@ -4,16 +4,37 @@ using System.Linq;
 
 namespace AdvancedConsole;
 
+/// <summary>
+/// Table.
+/// </summary>
 public sealed class Table
 {
     private readonly List<string[]> _rows = new();
     private string[]? _headers;
     private ConsoleColor? _borderColor = null;
 
+    /// <summary>
+    /// With headers.
+    /// </summary>
+    /// <param name="headers"></param>
+    /// <returns></returns>
     public Table WithHeaders(params string[] headers) { _headers = headers; return this; }
+    /// <summary>
+    /// Add a row.
+    /// </summary>
+    /// <param name="cells"></param>
+    /// <returns></returns>
     public Table AddRow(params string[] cells) { _rows.Add(cells); return this; }
+    /// <summary>
+    /// With border color.
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns></returns>
     public Table WithBorderColor(ConsoleColor color) { _borderColor = color; return this; }
 
+    /// <summary>
+    /// Write the table.
+    /// </summary>
     public void Write()
     {
         var all = new List<string[]>();
@@ -50,6 +71,12 @@ public sealed class Table
         Line('└', '┴', '┘', '─');
     }
 
+    /// <summary>
+    /// Write a row.
+    /// </summary>
+    /// <param name="cells"></param>
+    /// <param name="widths"></param>
+    /// <param name="bold"></param>
     private static void Row(string[] cells, int[] widths, bool bold)
     {
         Console.Write('│');

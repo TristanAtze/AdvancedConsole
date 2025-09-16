@@ -37,6 +37,11 @@ internal static class Ansi
         catch { return false; }
     }
 
+    /// <summary>
+    /// Foreground color.
+    /// </summary>
+    /// <param name="c"></param>
+    /// <returns></returns>
     public static string Fg(ConsoleColor c) => c switch
     {
         ConsoleColor.Black => "\u001b[30m",
@@ -58,6 +63,11 @@ internal static class Ansi
         _ => "\u001b[39m"
     };
 
+    /// <summary>
+    /// Background color.
+    /// </summary>
+    /// <param name="c"></param>
+    /// <returns></returns>
     public static string Bg(ConsoleColor c) => c switch
     {
         ConsoleColor.Black => "\u001b[40m",

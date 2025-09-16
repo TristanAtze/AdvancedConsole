@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace AdvancedConsole;
 
+/// <summary>
+/// Progress bar.
+/// </summary>
 public sealed class ProgressBar : IDisposable
 {
     private readonly int _width;
@@ -12,6 +15,11 @@ public sealed class ProgressBar : IDisposable
     private int _value;
     private string _label = "";
 
+    /// <summary>
+    /// Initialize a new progress bar.
+    /// </summary>
+    /// <param name="label"></param>
+    /// <param name="width"></param>
     public ProgressBar(string label = "", int width = 40)
     {
         _width = Math.Max(10, width);
@@ -20,6 +28,11 @@ public sealed class ProgressBar : IDisposable
         Draw();
     }
 
+    /// <summary>
+    /// Report the progress.
+    /// </summary>
+    /// <param name="progress"></param>
+    /// <param name="label"></param>
     public void Report(double progress, string? label = null)
     {
         _value = (int)Math.Clamp(Math.Round(progress * _width), 0, _width);
@@ -27,6 +40,9 @@ public sealed class ProgressBar : IDisposable
         Draw();
     }
 
+    /// <summary>
+    /// Draw the progress bar.
+    /// </summary>
     private void Draw()
     {
         lock (ConsoleX.RenderLock)
@@ -50,6 +66,9 @@ public sealed class ProgressBar : IDisposable
         }
     }
 
+    /// <summary>
+    /// Dispose the progress bar.
+    /// </summary>
     public void Dispose()
     {
         lock (ConsoleX.RenderLock)
@@ -62,6 +81,9 @@ public sealed class ProgressBar : IDisposable
 }
 
 
+/// <summary>
+/// Spinner.
+/// </summary>
 public sealed class Spinner : IDisposable
 {
     private readonly string[] _frames = new[] { "⠋", "⠙", "⠸", "⠴", "⠦", "⠇" };
@@ -71,6 +93,11 @@ public sealed class Spinner : IDisposable
     private string _text;
     private readonly int _intervalMs;
 
+    /// <summary>
+    /// Initialize a new spinner.
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="intervalMs"></param>
     public Spinner(string text = "Working…", int intervalMs = 80)
     {
         _text = text;
@@ -113,8 +140,15 @@ public sealed class Spinner : IDisposable
         }
     }
 
+    /// <summary>
+    /// Update the text of the spinner.
+    /// </summary>
+    /// <param name="text"></param>
     public void Update(string text) => _text = text;
 
+    /// <summary>
+    /// Dispose the spinner.
+    /// </summary>
     public void Dispose()
     {
         _cts.Cancel();

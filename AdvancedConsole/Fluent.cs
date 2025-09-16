@@ -15,11 +15,33 @@ public sealed class Styled
     private Styled(ConsoleColor? fg, ConsoleColor? bg, bool bold, bool underline)
     { _fg = fg; _bg = bg; _bold = bold; _underline = underline; }
 
+    /// <summary>
+    /// With foreground.
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns></returns>
     public static Styled WithForeground(ConsoleColor color) => new(color, null, false, false);
+    /// <summary>
+    /// With background.
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns></returns>
     public Styled WithBackground(ConsoleColor color) => new(_fg, color, _bold, _underline);
+    /// <summary>
+    /// Bold.
+    /// </summary>
+    /// <returns></returns>
     public Styled Bold() => new(_fg, _bg, true, _underline);
+    /// <summary>
+    /// Underline.
+    /// </summary>
+    /// <returns></returns>
     public Styled Underline() => new(_fg, _bg, _bold, true);
 
+    /// <summary>
+    /// Write.
+    /// </summary>
+    /// <param name="text"></param>
     public void Write(string text)
     {
         if (Ansi.IsEnabled)
@@ -37,5 +59,9 @@ public sealed class Styled
         }
     }
 
+    /// <summary>
+    /// Write line.
+    /// </summary>
+    /// <param name="text"></param>
     public void WriteLine(string text) { Write(text); Console.WriteLine(); }
 }
